@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * <p>
  * HospitalSet
@@ -48,6 +50,10 @@ public class HospitalSet extends BaseEntity {
 	@ApiModelProperty(value = "状态")
 	@TableField("status")
 	private Integer status;
+
+	@ApiModelProperty(value = "创建时间")
+	@TableField("create_time")
+	private Date createTime;
 
 }
 
