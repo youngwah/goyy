@@ -14,7 +14,6 @@
     <version>1.0.0</version>
     <modules>
         <module>common-util</module>
-        <module>service-uitl</module>
         <module>service-util</module>
     </modules>
 
