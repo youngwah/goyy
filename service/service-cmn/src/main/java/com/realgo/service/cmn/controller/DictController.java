@@ -43,4 +43,19 @@ public class DictController {
         dictService.importData(file);
         return Result.ok();
     }
+
+    // 获取数据字典名称
+    @ApiOperation("获取数据字典名称")
+    @GetMapping("/getName/{dictCode}/{value}")
+    public String getName(@PathVariable String dictCode,
+                          @PathVariable String value){
+        return dictService.getNameByDictCodeAndValue(dictCode, value);
+    }
+
+    // 获取数据字典名称
+    @GetMapping("/getName/{value}")
+    public String getName(@PathVariable String value){
+        return dictService.getNameByDictCodeAndValue("", value);
+
+    }
 }

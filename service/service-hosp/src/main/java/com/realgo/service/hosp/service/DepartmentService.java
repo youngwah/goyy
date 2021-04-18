@@ -2,8 +2,10 @@ package com.realgo.service.hosp.service;
 
 import com.realgo.goyy.model.hosp.Department;
 import com.realgo.goyy.vo.hosp.DepartmentQueryVo;
+import com.realgo.goyy.vo.hosp.DepartmentVo;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Map;
 
 public interface DepartmentService {
@@ -12,4 +14,6 @@ public interface DepartmentService {
     Page<Department> selectPage(int page, int limit, DepartmentQueryVo departmentQueryVo);
 
     void remove(String hoscode, String depcode);
+
+    List<DepartmentVo> findDepTree(String hoscode);
 }

@@ -7,6 +7,7 @@ import com.realgo.goyy.model.hosp.Hospital;
 import com.realgo.goyy.model.hosp.Schedule;
 import com.realgo.goyy.vo.hosp.DepartmentQueryVo;
 import com.realgo.goyy.vo.hosp.DepartmentVo;
+import com.realgo.goyy.vo.hosp.HospitalSetQueryVo;
 import com.realgo.goyy.vo.hosp.ScheduleQueryVo;
 import com.realgo.service.hosp.service.DepartmentService;
 import com.realgo.service.hosp.service.HospitalService;
@@ -19,9 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 import org.springframework.web.HttpRequestHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -218,5 +217,39 @@ public class HospitalApiController {
         }
         scheduleService.remove(hoscode, hosScheduleId);
         return Result.ok();
+    }
+
+    // 获取分页列表
+    @ApiOperation("获取分页列表")
+    @GetMapping("/{page}/{limit}")
+    public Result index(@PathVariable Integer page,
+                        @PathVariable Integer limit,
+                        HospitalSetQueryVo hospitalSetQueryVo) {
+        // 显示上线的医院
+        Page<Hospital> hospitalPage = hospitalService.selectPage(page, limit, hospitalSetQueryVo);
+        return Result.ok(hospitalPage   );
+
+    }
+
+
+    // 根据医院名称获取医院列表
+    @ApiOperation("根据医院名称获取医院列表")
+    @GetMapping("/findByHosname/{hosname}")
+    public Result findByHosname(@PathVariable String hosname) {
+        return Result.ok(hospitalService.findByHosname(hosname));
+    }
+
+    // 获取科室列表
+    @ApiOperation("获取科室列表")
+    @GetMapping("/department/{hoscode}")
+    public Result depIndex(@PathVariable String hoscode) {
+        return Result.ok(departmentService.findDepTree(hoscode));
+    }
+
+    // 医院预约挂号详情
+    @ApiOperation("医院预约挂号详情")
+    @GetMapping("/{hoscode}")
+    public Result item(@PathVariable String hoscode) {
+        return Result.ok(hospitalService.item(hoscode));
     }
 }

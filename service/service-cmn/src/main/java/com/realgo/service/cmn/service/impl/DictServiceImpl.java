@@ -11,6 +11,7 @@ import com.realgo.service.cmn.service.DictService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -20,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.WeakHashMap;
 
 @Service
 public class DictServiceImpl  extends ServiceImpl<DictMapper, Dict> implements DictService{
@@ -76,6 +78,32 @@ public class DictServiceImpl  extends ServiceImpl<DictMapper, Dict> implements D
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // 根据dictCode、value获取数据字典名字
+    @Override
+    public String getNameByDictCodeAndValue(String dictCode, String value) {
+
+        if (StringUtils.hasLength(dictCode)){
+            QueryWrapper<Dict> wrapper = new QueryWrapper<Dict>();
+            wrapper.eq("dictCode", dictCode);
+            wrapper.eq("value", value);
+            Dict dict = baseMapper.selectOne(wrapper);
+            if (null != dict) {
+                return dict.getName();
+            }
+        } else {
+            QueryWrapper<Dict> wrapper = new QueryWrapper<>();
+            wrapper.eq("value", value);
+            Dict dict = baseMapper.selectOne(wrapper);
+            if (null != dict) {
+                return dict.getName();
+            }
+            return "";
+        }
+
+
+        return null;
     }
 
     // 判断dict对象是否有子对象
